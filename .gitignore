@@ -1,3 +1,7 @@
+.aws-cfg.json
+
+.idea
+
 # Logs
 logs
 *.log

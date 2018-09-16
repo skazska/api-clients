@@ -1,0 +1,21 @@
+{
+  "name": "@skazska/timetables-api-clients",
+  "preferGlobal": true,
+  "bin": "./index.js",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skazska/timetables-api-clients.git"
+  },
+  "author": "skazska@gmail.com",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/skazska/timetables-api-clients/issues"
+  },
+  "homepage": "https://github.com/skazska/timetables-api-clients#readme"
+}
