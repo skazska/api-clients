@@ -1,26 +1,28 @@
 {
   "roles": {
     "timetables-api-clients": {
-      "inlinePolicy": {
-        "PolicyName": "timetables-api-clients-inline",
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:BatchGetItem",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:PutItem",
-                "dynamodb:DeleteItem",
-                "dynamodb:GetItem",
-                "dynamodb:UpdateItem"
-              ],
-              "Resource": "arn:aws:dynamodb:eu-west-1:266895356213:table/timetables-clients"
-            }
-          ]
+      "inlinePolicy": [
+        {
+          "PolicyName": "timetables-api-clients-inline",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:UpdateItem"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-west-1:266895356213:table/timetables-clients"
+              }
+            ]
+          }
         }
-      },
+      ],
       "policies": [
       ],
       "awsProperties": {
@@ -42,6 +44,7 @@
       "awsProperties": {
         "FunctionName": "timetables-api-clients",
         "Handler": "aws.handler",
+        "Timeout": 10,
         "Role": {
           "aws-deploy": "roles.timetables-api-clients"
         }
