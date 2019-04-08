@@ -1,5 +1,5 @@
 {
-  "roles": {
+  "role": {
     "timetables-api-clients": {
       "inlinePolicy": [
         {
@@ -24,6 +24,7 @@
         }
       ],
       "policies": [
+        "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
       ],
       "awsProperties": {
         "Path": "/service-role/timetables/",
@@ -46,7 +47,34 @@
         "Handler": "aws.handler",
         "Timeout": 10,
         "Role": {
-          "aws-deploy": "roles.timetables-api-clients"
+          "aws-deploy": "role.timetables-api-clients/Arn"
+        }
+      }
+    }
+  },
+  "restApi": {
+    "timetables-api": {
+      "awsProperties": {
+        "description": "timetables api"
+      },
+      "resources": {
+        "clients": {
+          "ANY": {
+            "awsProperties": {
+            },
+            "integration": {
+              "type": "AWS_PROXY",
+              "lambda": {
+                "aws-deploy": "lambda.timetables-api-clients"
+              },
+              "awsProperties": {
+              },
+              "responses": {
+                "200": {
+                }
+              }
+            }
+          }
         }
       }
     }

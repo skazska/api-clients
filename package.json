@@ -6,7 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "deploy": "node ./node_modules/.bin/deploy-aws service --aws-config-file=.deploy-aws-cfg.json --aws-accountId=266895356213"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/skazska/timetables-api-clients/issues"
   },
-  "homepage": "https://github.com/skazska/timetables-api-clients#readme"
+  "homepage": "https://github.com/skazska/timetables-api-clients#readme",
+  "devDependencies": {
+    "@skazska/deploy-aws": "0.0.3"
+  }
 }
