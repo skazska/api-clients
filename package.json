@@ -20,6 +20,15 @@
   },
   "homepage": "https://github.com/skazska/timetables-api-clients#readme",
   "devDependencies": {
-    "@skazska/deploy-aws": "0.0.3"
+    "@skazska/deploy-aws": "0.0.3",
+
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.2.0",
+    "sinon": "^7.3.1",
+    "sinon-chai": "^3.3.0"
+  },
+  "dependencies": {
+    "json-pointer": "^0.6.0"
   }
 }

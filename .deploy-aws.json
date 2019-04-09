@@ -35,6 +35,7 @@
   "lambda": {
     "timetables-api-clients": {
       "codeEntries": [
+        "aws",
         "methods",
         "schemas",
         "services",
