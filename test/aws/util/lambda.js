@@ -1,33 +1,36 @@
 const defaultPayload = require('./payload-example');
 const pointer = require('json-pointer');
 
-class EventPayload {
-    constructor (payload) {
-        if (!payload) payload = defaultPayload;
+class Event {
+    constructor (payload, type) {
+        if (!payload) {
+            if (!type) type = 'input';
+            payload = defaultPayload[type];
+        }
         this.payload = payload;
     }
 
     /**
      * updates event's payload
      * @param objData
-     * @return {EventPayload}
+     * @return {Event}
      * @mutable
      */
     update (objData) {
-        const ops = EventPayload.genOps('', objData, this.payload);
-        this.payload = EventPayload.pointUpdate(this.payload, ops);
+        const ops = Event.genOps('', objData, this.payload);
+        this.payload = Event.pointUpdate(this.payload, ops);
         return this;
     }
 
     /**
      * returns event's payload with mods
      * @param {Object} [ownData]
-     * @return {EventPayload}
+     * @return {Event}
      */
     get (ownData) {
         const data = Object.assign({}, this.payload);
-        const ops = EventPayload.genOps('', ownData || {}, data);
-        return EventPayload.pointUpdate(data, ops);
+        const ops = Event.genOps('', ownData || {}, data);
+        return Event.pointUpdate(data, ops);
     }
 
     static genOps (pathPrefix, props, origin) {
@@ -58,7 +61,7 @@ class EventPayload {
     /**
      * updates object via ops
      * @param {{op: string, path: string, val: *}[]} ops
-     * @return {EventPayload}
+     * @return {Event}
      */
     static pointUpdate (obj, ops) {
         if (!Array.isArray(ops)) ops = [ops];
@@ -82,5 +85,5 @@ class EventPayload {
 }
 
 module.exports = {
-    EventPayload: EventPayload
+    EventPayload: Event
 };

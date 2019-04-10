@@ -1,5 +1,4 @@
 {
-  "message":"Good evening, John of Seattle. Happy Thursday!",
   "input":{
     "resource":"/helloworld",
     "path":"/helloworld",
@@ -64,5 +63,38 @@
     },
     "body":"{ \"time\": \"evening\" }",
     "isBase64Encoded":false
+  },
+  "context": {
+    "requestTime": "20/Feb/2018:22:48:57 +0000",
+    "path": "/test/",
+    "accountId": "123456789012",
+    "protocol": "HTTP/1.1",
+    "resourceId": "yx5mhem7ye",
+    "stage": "test",
+    "requestTimeEpoch": 1519166937665,
+    "requestId": "3c3ecbaa-1690-11e8-ae31-8f39f1d24afd",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": "123456789012",
+      "cognitoIdentityId": null,
+      "caller": "AIDAJ........4HCKVJZG",
+      "sourceIp": "51.240.196.104",
+      "accessKey": "IAM_user_access_key",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": "arn:aws:iam::123456789012:user/alice",
+      "userAgent": "PostmanRuntime/7.1.1",
+      "user": "AIDAJ........4HCKVJZG"
+    },
+    "resourcePath": "/",
+    "httpMethod": "GET",
+    "apiId": "qr2gd9cfmf"
+  },
+  "output":{
+    "isBase64Encoded": false,
+    "statusCode": "200",
+    "headers": { "headerName": "headerValue" },
+    "multiValueHeaders": { "headerName": ["headerValue", "headerValue2"]},
+    "body": "..."
   }
 }

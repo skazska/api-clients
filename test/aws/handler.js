@@ -13,17 +13,19 @@ describe('handler', () => {
     const { apiGwProxy } = require('../../aws/handler-provider');
     const handler = apiGwProxy(methods);
 
-    const eventPayload = new EventPayload();
+    const eventInput = new EventPayload(null, 'input');
+    const eventContext = new EventPayload(null, 'context');
 
-    // beforeEach(() => {
-    //     apiCall = sinon.fake(() => {
-    //         return awsResponse({FunctionName: 'name', result: 'result'});
-    //     });
-    // });
-
-    it('should call list method for GET request if no id path param provided', () => {
+    it('should call list method for GET request if no id path param provided', (done) => {
         methodsStub.clientList.returns([{},{}]);
-        const result = handler.call({}, eventPayload.get({}));
-        expect(methodsStub.clientList).to.be.calledOnce;
+        const result = handler.call({}, eventInput.get({}), eventContext.get({}), (err, result) => {
+            expect(result.statusCode).eql('200');
+            expect(result.headers).eql({
+                "Content-Type": "application/json"
+            });
+            expect(result.body).eql('[{},{}]');
+            expect(methodsStub.clientList).to.be.calledOnce;
+            done();
+        });
     })
 });
