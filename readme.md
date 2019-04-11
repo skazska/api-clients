@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/skazska/timetables-api-clients.svg?branch=master)](https://travis-ci.com/skazska/timetables-api-clients)
+
 # Clients
 Any entity registered to act as a service provider
 Can have assigned:

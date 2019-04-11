@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://api.timuchin.net/schemas/user",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
+    },
+    "login": {"type": "string"},
+    "regDate": {"type": "string", "format": "date-time"}
+  },
+  "required": ["id","login"]
+}

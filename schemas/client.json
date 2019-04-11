@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://api.timuchin.net/schemas/client",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
+    },
+    "title": {"type":  "string"},
+    "regDate": {"type": "string", "format": "date-time"},
+    "phones": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["id","title", "regDate"]
+}
