@@ -35,16 +35,14 @@
   "lambda": {
     "timetables-api-clients": {
       "codeEntries": [
-        "aws",
-        "methods",
-        "schemas",
-        "services",
-        "node_modules",
-        "aws.js"
+        "dist/aws.js",
+        "dist/aws",
+        "dist/executables",
+        "node_modules"
       ],
       "awsProperties": {
         "FunctionName": "timetables-api-clients",
-        "Handler": "aws.handler",
+        "Handler": "dist/aws.handler",
         "Timeout": 10,
         "Role": {
           "aws-deploy": "role.timetables-api-clients/Arn"

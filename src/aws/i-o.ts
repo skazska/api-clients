@@ -1,4 +1,4 @@
-import {ClientModel, IClientKey, IClientProps} from "./model";
+import {ClientModel, IClientKey, IClientProps} from "../model";
 import {GenericModelFactory, IModelDataAdepter} from "@skazska/abstract-service-model";
 
 class ClientModelIOAdapter implements IModelDataAdepter<IClientKey, IClientProps> {

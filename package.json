@@ -6,7 +6,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*/*.js",
+    "clear-dist": "rm -rf dist/*",
+    "clear-docs": "rm -rf docs/*",
+    "compile": "npm run clear-dist && tsc",
+    "compile-test": "tsc -p tsconfig.test.json",
+    "gen-docs": "npm run clear-docs && typedoc --out docs --mode modules",
+    "test": "npm run compile-test && mocha -r ts-node/register test/*.ts",
+    "testjs": "mocha test/*/*.js",
     "deploy": "node ./node_modules/.bin/deploy-aws service --aws-config-file=.deploy-aws-cfg.json --aws-accountId=266895356213"
   },
   "repository": {
@@ -21,6 +27,8 @@
   "homepage": "https://github.com/skazska/timetables-api-clients#readme",
   "devDependencies": {
     "@skazska/deploy-aws": "0.0.3",
+    "@types/aws-lambda": "^8.10.31",
+    "@types/node": "^12.6.9",
     "@types/validator": "^10.11.2",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",

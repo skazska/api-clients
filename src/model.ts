@@ -1,4 +1,4 @@
-import {GenericSchemaModel, AbstractModelSchema, ModelValidationResult, IModel, failure, success, GenericModel,
+import {AbstractModelSchema, ModelValidationResult, IModel, failure, success, GenericModel,
     IGenericModelOptions} from "@skazska/abstract-service-model";
 import validator from 'validator';
 
