@@ -40,8 +40,7 @@
         "schemas",
         "services",
         "node_modules",
-        "aws.js",
-        "index.js"
+        "aws.js"
       ],
       "awsProperties": {
         "FunctionName": "timetables-api-clients",
