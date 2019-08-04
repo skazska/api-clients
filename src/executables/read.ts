@@ -6,9 +6,11 @@ import {ClientStorage} from "../aws/storage";
 const defaultStorage = ClientStorage.getInstance('clients');
 
 export class ClientReadExecutable extends ReadCRUDExecutable<IClientKey, IClientProps> {
-    // constructor(props :IClientExecutableConfig) {
-    //     super(props);
-    // }
+    constructor(props :IClientExecutableConfig) {
+        props.realm = 'clients';
+        props.operation = 'read';
+        super(props);
+    }
     static getInstance(storage? :ClientStorage) {
         return new ClientReadExecutable({storage: storage || defaultStorage});
     }

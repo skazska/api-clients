@@ -1,15 +1,16 @@
 import {IModelDataAdepter, GenericModelFactory} from '@skazska/abstract-service-model';
 import {DynamodbModelStorage, IDynamodbModelStorageConfig} from '@skazska/abstract-aws-service-model'
 import {ClientModel, IClientKey, IClientProps} from "../model";
+import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
 
 class ClientModelStorageAdapter implements IModelDataAdepter<IClientKey, IClientProps> {
     getKey (data :any) :IClientKey {
-        return { id: data.clientId };
+        return { id: data.id };
     };
     getProperties (data :any) :IClientProps {
         return {
-            locale :data.clientLocale,
-            name :data.clientName
+            locale :data.locale,
+            name :data.name
         }
     };
 }
@@ -24,11 +25,11 @@ export class ClientStorage extends DynamodbModelStorage<IClientKey, IClientProps
     }
 
     // returns new instance with default options
-    static getInstance (table? :string) :ClientStorage {
+    static getInstance (table? :string, client? :DocumentClient) :ClientStorage {
         return new ClientStorage({
             modelFactory: new ClientModelStorageFactory(),
             table: table || 'clients',
-            client: DynamodbModelStorage.getDefaultClient()
+            client: client || DynamodbModelStorage.getDefaultClient()
         });
     }
 

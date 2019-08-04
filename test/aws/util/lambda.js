@@ -65,17 +65,17 @@ class Event {
      */
     static pointUpdate (obj, ops) {
         if (!Array.isArray(ops)) ops = [ops];
-        ops.forEach(({op, path, val}) => {
+        ops.forEach(({op, path, value}) => {
             switch (op) {
                 case 'add':
                 case 'replace':
-                    pointer.set(obj, path, val);
+                    pointer.set(obj, path, value);
                     break;
                 case 'remove':
                     pointer.remove(obj, path);
                     break;
                 default:
-                    pointer[op](obj, path, val);
+                    pointer[op](obj, path, value);
             }
         });
         return obj;
