@@ -7,9 +7,9 @@ import {ClientModelIOFactory} from "../i-o";
 
 const ioModelFactory = new ClientModelIOFactory();
 
-export class ReadIO extends AwsApiGwProxyIO<IClientKey,IModel> {
+export class DeleteIO extends AwsApiGwProxyIO<IClientKey,null> {
     constructor(executable: ClientReadExecutable, authenticator?: AbstractAuth) {
-        super(executable, authenticator, {successStatus: 200});
+        super(executable, authenticator, {successStatus: 204});
     };
 
     protected authTokens(input: IAwsApiGwProxyInput): IAuthTokenResult {
@@ -20,12 +20,11 @@ export class ReadIO extends AwsApiGwProxyIO<IClientKey,IModel> {
         return success({id: inputs.event.pathParameters.id});
     }
 
-    protected success(result: IModel): APIGatewayProxyResult {
-        const data = ioModelFactory.data(result);
-        return super.success(data);
+    protected success(result: null): APIGatewayProxyResult {
+        return super.success(null);
     }
 
     static getInstance(executable, authenticator) {
-        return new ReadIO(executable, authenticator)
+        return new DeleteIO(executable, authenticator)
     }
 }

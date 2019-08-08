@@ -1,9 +1,17 @@
 import {ReadIO} from "./aws/i-o/read";
 import {ClientReadExecutable} from "./executables/read";
 import {JWTAuth} from "./authenticator";
+import {CreateIO} from "./aws/i-o/create";
+import {UpdateIO} from "./aws/i-o/update";
+import {ClientCreateExecutable} from "./executables/create";
+import {ClientReplaceExecutable} from "./executables/replace";
+import {ClientUpdateExecutable} from "./executables/update";
 
 export interface IApiGwProxyProviderConfig {
-    'GET' :ReadIO,
+    GET? :ReadIO,
+    POST? :CreateIO,
+    PUT? :UpdateIO,
+    PATCH? :UpdateIO
 }
 
 export const apiGwProxyProvider = (config :IApiGwProxyProviderConfig) => {
@@ -31,9 +39,22 @@ export const apiGwProxyProvider = (config :IApiGwProxyProviderConfig) => {
 };
 
 const authenticator = JWTAuth.getInstance();
-const executable = ClientReadExecutable.getInstance();
-const getIo = new ReadIO(executable, authenticator);
+const readExecutable = ClientReadExecutable.getInstance();
+const getIo = new ReadIO(readExecutable, authenticator);
+
+const createExecutable = ClientCreateExecutable.getInstance();
+const postIo = new CreateIO(createExecutable, authenticator);
+
+const replaceExecutable = ClientReplaceExecutable.getInstance();
+const replaceIo = new UpdateIO(replaceExecutable, authenticator);
+
+const updateExecutable = ClientUpdateExecutable.getInstance();
+const updateIo = new UpdateIO(updateExecutable, authenticator);
+
 
 export const handler = apiGwProxyProvider({
     'GET' :getIo,
+    'POST' :postIo,
+    'PUT' :replaceIo,
+    'PATCH' :updateIo
 });

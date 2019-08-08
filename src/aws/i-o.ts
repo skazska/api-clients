@@ -1,19 +1,22 @@
 import {ClientModel, IClientKey, IClientProps} from "../model";
-import {GenericModelFactory, IModelDataAdepter} from "@skazska/abstract-service-model";
+import {GenericModelFactory, IModelDataAdepter, IModelError, GenericResult, success} from "@skazska/abstract-service-model";
 
 class ClientModelIOAdapter implements IModelDataAdepter<IClientKey, IClientProps> {
-    getKey (data :any) :IClientKey {
-        return { id: data.clientId };
+    getKey (data :any) :GenericResult<IClientKey, IModelError> {
+        return success({ id: data.id });
     };
-    getProperties (data :any) :IClientProps {
-        return {
-            locale :data.clientLocale,
-            name :data.clientName
-        }
+    getProperties (data :any) :GenericResult<IClientProps, IModelError> {
+        return success({
+            locale :data.locale,
+            name :data.name
+        });
     };
+    getData(key: IClientKey, properties: IClientProps): any {
+        return {...key, ...properties}
+    }
 }
 
-class ClientModelIOFactory extends GenericModelFactory<IClientKey, IClientProps> {
+export class ClientModelIOFactory extends GenericModelFactory<IClientKey, IClientProps> {
     constructor() { super(ClientModel, new ClientModelIOAdapter()); };
 }
 
