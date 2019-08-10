@@ -5,16 +5,13 @@ import {ClientStorage} from "../aws/storage";
 
 const defaultStorage = ClientStorage.getInstance('clients');
 
-//TODO
-
-export class ClientUpdateExecutable extends CreateCRUDExecutable<IClientKey, IClientProps> {
+export class ClientSaveExecutable extends CreateCRUDExecutable<IClientKey, IClientProps> {
     constructor(props :IClientExecutableConfig) {
         props.realm = 'clients';
-        props.operation = 'update';
         super(props);
     }
 
-    static getInstance(storage? :ClientStorage) {
-        return new ClientUpdateExecutable({storage: storage || defaultStorage});
+    static getInstance(operation: string, storage? :ClientStorage) {
+        return new ClientSaveExecutable({operation: operation, storage: storage || defaultStorage});
     }
 }

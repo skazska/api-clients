@@ -7,12 +7,12 @@ const defaultStorage = ClientStorage.getInstance('clients');
 
 export class ClientDeleteExecutable extends DeleteCRUDExecutable<IClientKey, IClientProps> {
     constructor(props :IClientExecutableConfig) {
-        props.realm = 'clients';
-        props.operation = 'delete';
+        props.realm = props.realm || 'clients';
+        props.operation = props.operation || 'delete';
         super(props);
     }
 
-    static getInstance(storage? :ClientStorage) {
-        return new ClientDeleteExecutable({storage: storage || defaultStorage});
+    static getInstance(operation? :string, storage? :ClientStorage) {
+        return new ClientDeleteExecutable({operation: operation, storage: storage || defaultStorage});
     }
 }

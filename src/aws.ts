@@ -1,17 +1,16 @@
-import {ReadIO} from "./aws/i-o/read";
+import {GetIO} from "./aws/i-o/get";
 import {ClientReadExecutable} from "./executables/read";
 import {JWTAuth} from "./authenticator";
-import {CreateIO} from "./aws/i-o/create";
-import {UpdateIO} from "./aws/i-o/update";
-import {ClientCreateExecutable} from "./executables/create";
-import {ClientReplaceExecutable} from "./executables/replace";
-import {ClientUpdateExecutable} from "./executables/update";
+import {EditIO} from "./aws/i-o/edit";
+import {ClientSaveExecutable} from "./executables/save";
+import {DeleteIO} from "./aws/i-o/delete";
 
 export interface IApiGwProxyProviderConfig {
-    GET? :ReadIO,
-    POST? :CreateIO,
-    PUT? :UpdateIO,
-    PATCH? :UpdateIO
+    GET? :GetIO,
+    POST? :EditIO,
+    PUT? :EditIO, //TODO
+    PATCH? :EditIO,
+    DELETE? :DeleteIO
 }
 
 export const apiGwProxyProvider = (config :IApiGwProxyProviderConfig) => {
@@ -40,21 +39,26 @@ export const apiGwProxyProvider = (config :IApiGwProxyProviderConfig) => {
 
 const authenticator = JWTAuth.getInstance();
 const readExecutable = ClientReadExecutable.getInstance();
-const getIo = new ReadIO(readExecutable, authenticator);
+const getIo = new GetIO(readExecutable, authenticator);
 
-const createExecutable = ClientCreateExecutable.getInstance();
-const postIo = new CreateIO(createExecutable, authenticator);
+const deleteExecutable = ClientReadExecutable.getInstance();
+const deleteIo = new DeleteIO(deleteExecutable, authenticator);
 
-const replaceExecutable = ClientReplaceExecutable.getInstance();
-const replaceIo = new UpdateIO(replaceExecutable, authenticator);
+const createExecutable = ClientSaveExecutable.getInstance('create');
+const postIo = new EditIO(createExecutable, authenticator);
 
-const updateExecutable = ClientUpdateExecutable.getInstance();
-const updateIo = new UpdateIO(updateExecutable, authenticator);
+const replaceExecutable = ClientSaveExecutable.getInstance('replace');
+const replaceIo = new EditIO(replaceExecutable, authenticator);
+
+// TODO
+const updateExecutable = ClientSaveExecutable.getInstance('update');
+const updateIo = new EditIO(updateExecutable, authenticator);
 
 
 export const handler = apiGwProxyProvider({
     'GET' :getIo,
     'POST' :postIo,
     'PUT' :replaceIo,
-    'PATCH' :updateIo
+    'PATCH' :updateIo, // TODO
+    'DELETE' :deleteIo
 });

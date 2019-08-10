@@ -7,11 +7,11 @@ const defaultStorage = ClientStorage.getInstance('clients');
 
 export class ClientReadExecutable extends ReadCRUDExecutable<IClientKey, IClientProps> {
     constructor(props :IClientExecutableConfig) {
-        props.realm = 'clients';
-        props.operation = 'read';
+        props.realm = props.realm || 'clients';
+        props.operation = props.operation || 'read';
         super(props);
     }
-    static getInstance(storage? :ClientStorage) {
-        return new ClientReadExecutable({storage: storage || defaultStorage});
+    static getInstance(operation?: string, storage? :ClientStorage) {
+        return new ClientReadExecutable({operation: operation, storage: storage || defaultStorage});
     }
 }

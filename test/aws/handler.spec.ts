@@ -1,17 +1,13 @@
 import "mocha";
 import {expect, use}  from 'chai';
 
-// import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
-
 import {JWTAuth} from "../../src/authenticator";
 import {APIGatewayProxyResult} from "aws-lambda";
-import {CreateIO} from "../../src/aws/i-o/create";
-import {ClientCreateExecutable} from "../../src/executables/create";
-import {ClientReplaceExecutable} from "../../src/executables/replace";
-import {UpdateIO} from "../../src/aws/i-o/update";
+import {EditIO} from "../../src/aws/i-o/edit";
+import {ClientSaveExecutable} from "../../src/executables/save";
 
 import {ClientReadExecutable} from "../../src/executables/read";
-import {ReadIO} from "../../src/aws/i-o/read";
+import {GetIO} from "../../src/aws/i-o/get";
 import {ClientStorage} from "../../src/aws/storage";
 import {apiGwProxyProvider} from "../../src/aws";
 import {EventPayload} from './util/lambda';
@@ -32,7 +28,7 @@ const tests = [
         storageResponse: {Item: {id: 'client', name: 'name', locale: 'en-US'}},
         storageError: null,
         executableClass: () => ClientReadExecutable,
-        ioConstructor: () => ReadIO,
+        ioConstructor: () => GetIO,
         eventPart: {
             pathParameters: {id: 'client'}
         },
@@ -48,8 +44,8 @@ const tests = [
         storageMethod: 'put',
         storageResponse: {Attributes: {id: 'client', name: 'executable expected to return passed model at the moment', locale: 'en-US'}},
         storageError: null,
-        executableClass: () => ClientCreateExecutable,
-        ioConstructor: () => CreateIO,
+        executableClass: () => ClientSaveExecutable,
+        ioConstructor: () => EditIO,
         eventPart: {
             body: JSON.stringify({id: 'client', name: 'name', locale: 'en-US'})
         },
@@ -65,8 +61,9 @@ const tests = [
         storageMethod: 'put',
         storageResponse: {Attributes: {id: 'client', name: 'executable expected to return passed model at the moment', locale: 'en-US'}},
         storageError: null,
-        executableClass: () => ClientReplaceExecutable,
-        ioConstructor: () => UpdateIO,
+        executableClass: () => ClientSaveExecutable,
+        ioConstructor: () => EditIO,
+        ioConstructorOptions: {successStatus: 202},
         eventPart: {
             body: JSON.stringify({id: 'client', name: 'name', locale: 'en-US'})
         },
@@ -105,8 +102,8 @@ describe('handler general tests', () => {
 
     const testRun = test => {
         it(`#${test.httpMethod} calls storage client's ${test.storageMethod} method with ${JSON.stringify(test.expectedStorageCallParams)} and results with status ${test.expectedResultStatus} with ${JSON.stringify(test.expectedResultBody)}`, async () => {
-            const executable = test.executableClass().getInstance(storage);
-            const io = test.ioConstructor().getInstance(executable, authenticator);
+            const executable = test.executableClass().getInstance(test.authOps, storage);
+            const io = test.ioConstructor().getInstance(executable, authenticator, test.ioConstructorOptions);
             const handler = apiGwProxyProvider({ [test.httpMethod]: io });
 
             // prepare auth token and event object
@@ -151,7 +148,7 @@ describe('handler general tests', () => {
 
     };
 
-    before(() => {
+    beforeEach(() => {
         authenticator = JWTAuth.getInstance();
         client = DynamodbModelStorage.getDefaultClient();
         storage = ClientStorage.getInstance('clients', client);
@@ -162,6 +159,10 @@ describe('handler general tests', () => {
         clientStub = sinon.stub(client);
     });
 
+    afterEach(() => {
+        sinon.restore();
+    });
+
     tests.forEach(testRun);
-    // testRun(tests[3]);
+    // testRun(tests[2]);
 });
