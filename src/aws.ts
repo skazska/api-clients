@@ -15,6 +15,8 @@ export interface IApiGwProxyProviderConfig {
 
 export const apiGwProxyProvider = (config :IApiGwProxyProviderConfig) => {
     return async (event, context, callback) => {
+
+        console.dir(event);
         try {
             const io = config[event.httpMethod];
             const result = await io.handler({event: event, context: context, callback: callback});
@@ -25,8 +27,9 @@ export const apiGwProxyProvider = (config :IApiGwProxyProviderConfig) => {
 
             return callback(null, result.get());
         } catch (e) {
+            console.error(e);
             callback(null, {
-                statusCode: '500',
+                statusCode: 500,
                 body: e,
                 headers: {
                     'Content-Type': 'application/json',

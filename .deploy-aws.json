@@ -35,9 +35,7 @@
   "lambda": {
     "timetables-api-clients": {
       "codeEntries": [
-        "dist/aws.js",
-        "dist/aws",
-        "dist/executables",
+        "dist",
         "node_modules"
       ],
       "awsProperties": {

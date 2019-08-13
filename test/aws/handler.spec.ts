@@ -38,6 +38,23 @@ const tests = [
         expectedStorageCallParams: {TableName: 'clients', Key: {id: 'client'}}
     },
     {
+        httpMethod: 'GET',
+        authRealm: 'clients',
+        authOps: 'read',
+        storageMethod: 'get',
+        storageResponse: {Item: {id: 'client', name: 'name', locale: 'en-US'}},
+        storageError: null,
+        executableClass: () => ClientReadExecutable,
+        ioConstructor: () => GetIO,
+        eventPart: {
+            pathParameters: {id: 'client'}
+        },
+
+        expectedResultBody: {"locale":"en-US","name":"name","id":"client"},
+        expectedResultStatus: 200,
+        expectedStorageCallParams: {TableName: 'clients', Key: {id: 'client'}}
+    },
+    {
         httpMethod: 'POST',
         authRealm: 'clients',
         authOps: 'create',
@@ -85,7 +102,7 @@ const tests = [
             pathParameters: {id: 'client'}
         },
 
-        expectedResultBody: null,
+        expectedResultBody: '',
         expectedResultStatus: 204,
         expectedStorageCallParams: {TableName: 'clients', Key: {"id": "client"}}
     }
@@ -133,7 +150,7 @@ describe('handler general tests', () => {
             if (test.expectedResultBody) {
                 expect(JSON.parse(result.body)).eql(test.expectedResultBody);
             } else {
-                expect(result).not.to.have.property('body');
+                expect(result.body).equal('');
             }
 
             // check if correct storage method is called
@@ -157,6 +174,35 @@ describe('handler general tests', () => {
         eventContext = new EventPayload(null, 'context');
 
         clientStub = sinon.stub(client);
+    });
+
+    it('no auth token', async () => {
+        const test = tests[0];
+        const executable = test.executableClass().getInstance(test.authOps, storage);
+        const io = test.ioConstructor().getInstance(executable, authenticator, test.ioConstructorOptions);
+        const handler = apiGwProxyProvider({ [test.httpMethod]: io });
+
+        const event = eventInput.get(Object.assign({
+            httpMethod: test.httpMethod,
+        }, test.eventPart));
+        const context = eventContext.get({});
+        // stub storage client method with expected response
+        clientStub[test.storageMethod].yieldsRightAsync(test.storageError, test.storageResponse);
+
+        // run handler
+        const result :APIGatewayProxyResult = await new Promise((resolve, reject) => {
+            handler.call({}, event, context, (err, result) => {
+                if (err) return reject(err);
+                return resolve(result);
+            });
+        });
+
+        // check result
+        expect(result.statusCode).eql(403);
+        expect(result.headers).eql({
+            "Content-Type": "application/json"
+        });
+        expect(result.body).equal('{"message":"not identified","errors":[{"message":"bad tokens"}]}');
     });
 
     afterEach(() => {

@@ -14,7 +14,7 @@ export class JWTAuthIdentity implements IAuthIdentity {
             verify(this.token, SECRET, {subject: realm, audience: re});
             return Promise.resolve(success(true));
         } catch (e) {
-            return Promise.resolve(failure(e));
+            return Promise.resolve(failure([AbstractAuth.error(e.message)]));
         }
     };
 }

@@ -11,9 +11,12 @@
     "compile": "npm run clear-dist && tsc",
     "compile-test": "tsc -p tsconfig.test.json",
     "gen-docs": "npm run clear-docs && typedoc --out docs --mode modules",
-    "test": "npm run compile-test && mocha -r ts-node/register test/*.ts",
+    "test": "npm run compile-test && mocha -r ts-node/register test/**/*.spec.ts",
     "testjs": "mocha test/*/*.js",
-    "deploy": "node ./node_modules/.bin/deploy-aws service --aws-config-file=.deploy-aws-cfg.json --aws-accountId=266895356213"
+    "production": "npm run compile && mv node_modules dev_node_modules && npm install --production",
+    "deproduction": "rm -rf node_modules && mv dev_node_modules node_modules",
+    "aws-deploy": "deploy-aws service --aws-config-file=.deploy-aws-cfg.json --aws-accountId=266895356213",
+    "deploy": "npm run production && npm run aws-deploy && npm run deproduction"
   },
   "repository": {
     "type": "git",
@@ -26,24 +29,24 @@
   },
   "homepage": "https://github.com/skazska/timetables-api-clients#readme",
   "devDependencies": {
-    "@skazska/deploy-aws": "0.0.3",
     "@types/aws-lambda": "^8.10.31",
-    "@types/chai": "^4.1.7",
+    "@types/chai": "^4.2.0",
+    "@types/jsonwebtoken": "^8.3.3",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.9",
+    "@types/node": "^12.7.1",
     "@types/validator": "^10.11.2",
     "chai": "^4.2.0",
+    "json-pointer": "^0.6.0",
     "mocha": "^5.2.0",
-    "sinon": "^7.3.2",
+    "sinon": "^7.4.1",
     "sinon-chai": "^3.3.0",
     "ts-node": "^8.3.0",
-    "typescript": "^3.5.3",
-    "json-pointer": "^0.6.0"
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@skazska/abstract-aws-service-model": "0.0.0",
-    "@skazska/abstract-service-model": "^0.2.4",
-    "@types/jsonwebtoken": "^8.3.2",
+    "@skazska/abstract-aws-service-model": "0.0.6",
+    "@skazska/abstract-service-model": "^0.2.7",
     "jsonwebtoken": "^8.5.1",
     "validator": "^11.1.0"
   }
